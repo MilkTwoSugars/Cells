@@ -25,10 +25,11 @@ function Grid (resolution) {
     this.draw = function() {
         for (var i = 0; i < this.matrix.length; i++) {
             for (var j = 0; j < this.matrix[i].length; j++){
+                let d = rule.countNeighbours(this, i, j);
                 if (this.matrix[i][j] == 1){
-                    fill(rule.getColour());
+                    fill(d * 50, 100, 100);
                 } else {
-                    fill("black");
+                    fill(d * 10);
                 }
                 ellipse(i * this.res, j * this.res, this.res, this.res);
             }

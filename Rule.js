@@ -29,10 +29,7 @@ function Rule() {
 
             }
         }
-        osc.freq(this.getFreq(222));
-        osc2.freq(this.getFreq(99));
-        osc.amp(map(this.counter, 0, grid.cols + grid.rows, 0.05, 0.1));
-        osc2.amp(map(this.counter, 0, grid.cols + grid.rows, 0.05, 0.1));
+        sound.updateFreq(this.counter);
         return next;
     }
 
@@ -47,14 +44,6 @@ function Rule() {
             }
             sum -= g.matrix[x][y];
             return sum;
-    }
-
-    this.getColour = function () {
-        let c = color(100, 100, 100);
-        c.setRed(map(this.counter, 0, grid.rows + grid.cols, 0, 20));
-        c.setGreen(map(this.counter, 0, grid.rows + grid.cols, 0, 100));
-        c.setBlue(map(this.counter, 0, grid.rows + grid.cols, 0, 20));
-        return c;
     }
 
     this.getFreq = function (highest) {
