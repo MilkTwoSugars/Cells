@@ -1,57 +1,63 @@
 function checkAudioContext() {
-    if (!soundStarted) {
+    if (!initialised) {
         getAudioContext().resume().then(() => {
-            sound.initialise();
-            soundStarted = true;
+            initialse();
+            initialised = true;
         });
     }
 }
 function Sound() {
-    this.osc1;
-    this.osc2;
-    this.lfo1;
-    this.lfo2;
-    this.filter1;
-    this.filter2;
+    this.osc;
+    this.lfo;
+    this.filter;
     this.initialised = false;
+    this.lfoLow;
+    this.lfoHigh;
+    this.oscFreq;
 
-    this.initialise = function () {
+    this.initialise = function (oscFreq, lfoLow, lfoHigh) {
 
         if (!this.initialised) {
-            this.filter1 = new p5.Filter();
 
-            this.osc1 = new p5.Oscillator();
-            this.osc1.setType('triangle');
-            this.osc1.disconnect();
+            this.lfoLow = lfoLow;
+            this.lfoHigh = lfoHigh;
+            this.oscFreq = oscFreq;
 
-            this.lfo1 = new p5.Oscillator();
-            this.lfo1.disconnect();
-            this.lfo1.setType('sine');
+            this.filter = new p5.Filter();
 
-            this.osc1.connect(this.filter1);
+            this.osc = new p5.Oscillator();
+            this.osc.setType('sawtooth');
+            this.osc.disconnect();
 
-            this.lfo1.start();
-            this.osc1.start();
+            this.lfo = new p5.Oscillator();
+            this.lfo.disconnect();
+            this.lfo.setType('sine');
 
-            this.lfo1.freq(0.5);
-            this.osc1.freq(150);
+            this.osc.connect(this.filter);
+            this.osc.amp(0.1);
 
-            this.filter1.freq(1200);
+            this.lfo.start();
+            this.osc.start();
 
-            this.filter1.res(12);
+            this.lfo.freq(0.5);
+            this.osc.freq(oscFreq);
 
-            this.lfo1.amp(500);
+            this.filter.freq(2000);
 
-            this.filter1.freq(this.lfo1);
+            this.filter.res(4);
+
+            this.lfo.amp(600);
+
+            this.filter.freq(this.lfo);
 
             this.initialised = true;
         }
     }
 
     this.updateFreq = function (count) {
-        let f = map(count, 0, grid.cols + grid.rows, 0, 5);
-        let f2 = map(count, 0, grid.cols + grid.rows, 145, 155);
-        this.lfo1.freq(f);
-        //this.osc1.freq(f2);
+        let f = map(count, 0, grid.cols + grid.rows, this.lfoLow, this.lfoHigh);
+        let f2 = map(count, 0, grid.cols + grid.rows, this.oscFreq / 2, this.oscFreq * 2);
+        this.lfo.freq(f);
+        this.osc.freq(f2);
     }
 }

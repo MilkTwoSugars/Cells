@@ -17,6 +17,7 @@ function Rule() {
 
                 if (state == 0 && neighbours == 3) {
                     next.matrix[i][j] = 1;
+                    this.counter += 1;
                 } else if (state == 1 && (neighbours < 2 || neighbours > 3)) {
                     next.matrix[i][j] = 0;
                 } else {
@@ -24,12 +25,14 @@ function Rule() {
                 }
 
                 if (next.matrix[i][j] == 1) {
-                 this.counter += 1;   
+                   
                 };
 
             }
         }
         sound.updateFreq(this.counter);
+        sound2.updateFreq(this.counter);
+        sound3.updateFreq(this.counter);
         return next;
     }
 

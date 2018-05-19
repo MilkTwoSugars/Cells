@@ -1,5 +1,8 @@
 function touchStarted() {
     checkAudioContext();
+    if (initialised){
+        grid.fill();
+    }
 }
 
 function keyPressed() {
